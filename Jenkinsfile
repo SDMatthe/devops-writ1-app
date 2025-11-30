@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     DOCKERHUB = credentials('DockerHub')
-    IMAGE_NAME = 'DevOps-WRIT1-app'
+    IMAGE_NAME = 'devops-writ1-app'
   }
 
   stages {
@@ -33,8 +33,8 @@ pipeline {
     stage('Deploy') {
       steps {
         sh '''
-          docker stop DevOps-WRIT1-app || true
-          docker rm DevOps-WRIT1-app || true
+          docker stop devops-writ1-app || true
+          docker rm devops-writ1-app || true
           docker compose up -d
         '''
       }
