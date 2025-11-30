@@ -7,7 +7,7 @@ FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /app
 
 # Copy pom.xml and source code
-COPY CollegeCarPark/pom.xml .
+COPY pom.xml .
 COPY CollegeCarPark/src ./src
 
 # Build the application
