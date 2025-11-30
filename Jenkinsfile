@@ -9,10 +9,7 @@ pipeline {
   stages {
     stage('Build Java Application') {
       steps {
-        sh '''
-          cd CollegeCarPark
-          mvn clean package
-        '''
+        sh 'mvn clean package'
       }
     }
 
