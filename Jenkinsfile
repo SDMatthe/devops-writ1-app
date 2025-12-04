@@ -19,10 +19,16 @@ pipeline {
       }
     }
 
+    stage('Build and Run Tests') {
+          steps {
+            sh 'docker build -t --name ${IMAGE_NAME} ${IMAGE_NAME} .'
+            sh 'cd CollegeCarPark && mvn test'
+          }
+    }
+
     stage('Build and Push Docker Image') {
       steps {
         sh '''
-          docker build -t ${IMAGE_NAME} .
           docker tag ${IMAGE_NAME}:${BUILD_TAG} ${IMAGE_NAME}:latest
           docker push ${IMAGE_NAME}:${BUILD_TAG}
           docker push ${IMAGE_NAME}:latest
@@ -40,11 +46,7 @@ pipeline {
       }
     }
 
-    stage('Run Tests') {
-      steps {
-        sh 'cd CollegeCarPark && mvn test'
-      }
-    }
+
   }
 
   post {
