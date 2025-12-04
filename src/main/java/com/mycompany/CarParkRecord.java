@@ -30,7 +30,7 @@ public class CarParkRecord {
         DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss"); //Get the current time HH:MM:SS
         String strHour = hourFormat.format(date); //Format the time into a string
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath)); //Create a new reader object
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath));
              BufferedWriter myWriter = new BufferedWriter(new FileWriter(filePath, true))) {
             String line;
 
@@ -79,15 +79,13 @@ public class CarParkRecord {
             }
 
             // Close the writer outside the loop
-            try {
-                myWriter.close();
-            } catch (IOException e) {
-                System.out.println("Error closing writer");
-                e.printStackTrace();
-            }
+//            try {
+//                myWriter.close();
+//            } catch (IOException e) {
+//                System.out.println("Error closing writer");
+//                e.printStackTrace();
+//            }
 
-            reader.close();
-            myWriter.close();
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -99,41 +97,22 @@ public class CarParkRecord {
         }
     }
 
-    private void  OverwriteLine(String lineToErase) {
-        //Instantiating the Scanner class to read the file
-        StringBuilder buffer;
+    private void OverwriteLine(String lineToErase) {
+        StringBuilder buffer = new StringBuilder();
         try (Scanner sc = new Scanner(new File(filePath))) {
-            buffer = new StringBuilder();
             while (sc.hasNextLine()) {
-                buffer.append(sc.nextLine()).append(System.lineSeparator());
+                buffer.append(sc.nextLine()). append(System.lineSeparator());
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-
         String fileContents = buffer.toString();
-        System.out.println("Contents of the file: " + fileContents);
-        String newLine = "";
-        //Replacing the old line with new line
-        fileContents = fileContents.replaceFirst(lineToErase, newLine);
-        //instantiating the FileWriter class
-        FileWriter writer;
-        try {
-            writer = new FileWriter(filePath);
-            writer.append(fileContents);
-            writer.flush();
+        fileContents = fileContents.replaceFirst(lineToErase, "");
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
+        try (FileWriter writer = new FileWriter(filePath)) {
             writer.append(fileContents);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            writer.flush();
+            writer. flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
