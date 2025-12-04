@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Tests for CarParkRecord class functions accessible from the Record Menu:
  * - parseRecord() - Main record processing function
  * - printRecordDebug() - Debug output function
- * - OverwriteLine() - Line overwriting function (private, tested indirectly)
  */
 public class CarParkRecordTest {
 

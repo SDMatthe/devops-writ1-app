@@ -30,9 +30,8 @@ public class CarParkRecord {
         DateFormat hourFormat = new SimpleDateFormat("HH:mm:ss"); //Get the current time HH:MM:SS
         String strHour = hourFormat.format(date); //Format the time into a string
 
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(filePath)); //Create a new reader object
-            BufferedWriter myWriter = new BufferedWriter(new FileWriter(filePath, true)); //Create a new writer object
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath)); //Create a new reader object
+             BufferedWriter myWriter = new BufferedWriter(new FileWriter(filePath, true))) {
             String line;
 
             boolean vehicleFound = false; //A boolean variable that is changed to true of the VRN has been located
@@ -102,23 +101,19 @@ public class CarParkRecord {
 
     private void  OverwriteLine(String lineToErase) {
         //Instantiating the Scanner class to read the file
-        Scanner sc;
-        try {
-            sc = new Scanner(new File(filePath));
+        StringBuilder buffer;
+        try (Scanner sc = new Scanner(new File(filePath))) {
+            buffer = new StringBuilder();
+            while (sc.hasNextLine()) {
+                buffer.append(sc.nextLine()).append(System.lineSeparator());
+            }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
 
-        //instantiating the StringBuffer class
-        StringBuilder buffer = new StringBuilder();
-        //Reading lines of the file and appending them to StringBuffer
-        while (sc.hasNextLine()) {
-            buffer.append(sc.nextLine()).append(System.lineSeparator());
-        }
+
         String fileContents = buffer.toString();
         System.out.println("Contents of the file: " + fileContents);
-        //closing the Scanner object
-        sc.close();
         String newLine = "";
         //Replacing the old line with new line
         fileContents = fileContents.replaceFirst(lineToErase, newLine);
@@ -126,6 +121,9 @@ public class CarParkRecord {
         FileWriter writer;
         try {
             writer = new FileWriter(filePath);
+            writer.append(fileContents);
+            writer.flush();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
