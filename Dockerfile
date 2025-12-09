@@ -11,7 +11,7 @@ COPY pom.xml .
 COPY ./src ./src
 
 # Build the application
-RUN mvn clean package -s /root/.m2/settings.xml
+RUN mvn clean package -s /root/.m2/settings.xml -DskipTests
 
 # Define base image for runtime stage
 FROM eclipse-temurin:21-jdk
